@@ -1,3 +1,15 @@
+# data
+*.npy
+
+# training logs
+logs/
+
+# tensorflow/models repository
+models/
+
+# fashion-mnist data
+fashion-mnist
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -127,3 +139,6 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# macOS files
+.DS_Store
