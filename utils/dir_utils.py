@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 # @Date    : Aug-06-20 14:33
-# @Author  : Your Name (you@example.org)
+# @Author  : Kelly Hwong (dianhuangkan@gmail.com)
 
 import errno
 import six

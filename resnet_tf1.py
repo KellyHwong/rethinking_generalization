@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 # @Date    : Mar-09-20 19:21
-# @Author  : Your Name (you@example.org)
+# @Author  : Kelly Hwong (dianhuangkan@gmail.com)
 # @Link    : http://example.org
+
 
 import os
 import cv2

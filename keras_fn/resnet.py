@@ -56,7 +56,7 @@ def lr_schedule(epoch):
     elif epoch >= 180:
         lr *= 0.5e-3
     print(
-        f"Model has been trained for {epoch} epoch(s); learning rate for new epoch: {lr}.")
+        f"Model has been trained for {epoch} epoch(s); learning rate for next epoch: {lr}.")
     tf.summary.scalar('learning rate', data=lr, step=epoch)
     return lr
 
