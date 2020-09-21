@@ -9,6 +9,7 @@ import os
 import sys
 from optparse import OptionParser
 import numpy as np
+from tqdm import tqdm
 
 import tensorflow as tf
 from tensorflow.keras.utils import plot_model
@@ -28,6 +29,8 @@ def cmd_parser():
                       action='store', default="ResNet20v2", help='model_type, user named experiment name, e.g., ResNet20v2_BCE.')
     parser.add_option('--exper_type', type='string', dest='exper_type',
                       action='store', default="normal", help='Whether to randomized all train labels.')
+    parser.add_option('--p', type='float', dest='p',
+                      action='store', default=0.5, help="Probability of corrupt each label")
     parser.add_option('--loss', type='string', dest='loss',
                       action='store', default="bce", help='loss name, e.g., bce or cce.')
     # Parameters we care
@@ -80,6 +83,14 @@ def main():
     elif exper_type == "shuffle_labels":
         print(f"exper_type is shuffle_labels, shuffle labels.")
         np.random.shuffle(train_labels)
+    elif exper_type == "corrupted_labels":
+        p = options.p
+        print(
+            f"exper_type is corrupted_labels, corrupted labels according to probability p={p}.")
+        for i in tqdm(range(train_labels.shape[0])):
+            if np.random.uniform() < p:
+                train_labels[i] = np.random.randint(
+                    0, num_classes)  # corrupted this label
 
     train_labels = keras.utils.to_categorical(train_labels)  # to one-hot
 
@@ -115,6 +126,10 @@ def main():
     # checkpoint = ModelCheckpoint(filepath=filepath, monitor="acc",verbose=1)
     logdir = os.path.join(
         "logs", model_type, exper_type, datetime.datetime.now().strftime("%Y%m%d-%H%M%S"))
+    if exper_type == "corrupted_labels":
+        logdir = os.path.join(
+            "logs", model_type, exper_type, f"{p}", datetime.datetime.now().strftime("%Y%m%d-%H%M%S"))
+
     file_writer = tf.summary.create_file_writer(
         logdir + "/metrics")  # custom scalars
     file_writer.set_as_default()

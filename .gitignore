@@ -1,14 +1,14 @@
 # data
 *.npy
 
+# VSCode settings
+.vscode/
+
 # training logs
 logs/
 
 # tensorflow/models repository
 models/
-
-# fashion-mnist data
-fashion-mnist
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
