@@ -44,8 +44,11 @@ def cmd_parser():
     return args
 
 
-def main():
-    options = cmd_parser()
+def train(options):
+    """
+    Input:
+        options: training options, such as model_type, loss, epochs.
+    """
 
     # data, e.g., fashion_mnist = keras.datasets.fashion_mnist
     mnist = keras.datasets.mnist
@@ -76,7 +79,7 @@ def main():
     input_shape = train_images.shape[1:]
 
     exper_type = options.exper_type
-    np.random.seed(42)
+    np.random.seed(42)  # unify the random seed
     if exper_type == "random_labels":
         print(f"exper_type is random_labels, randomized labels.")
         train_labels = np.random.randint(0, num_classes, train_labels.shape[0])
@@ -90,7 +93,7 @@ def main():
         for i in tqdm(range(train_labels.shape[0])):
             if np.random.uniform() < p:
                 train_labels[i] = np.random.randint(
-                    0, num_classes)  # corrupted this label
+                    0, num_classes)  # corrupt this label
 
     train_labels = keras.utils.to_categorical(train_labels)  # to one-hot
 
@@ -149,6 +152,25 @@ def main():
         batch_size=batch_size,
         callbacks=callbacks
     )
+
+
+def test_p(options):
+    """Testing p parameter
+    """
+    # 构造待测 p 序列
+    p = np.arange(0, 1.1, step=0.1)  # 0.0, 0.1,..., 1.0
+    print(f"Testing p parameters: {p}.")
+    for _ in p:
+        print(f"Current testing p parameter: {_}.")
+        options.p = _
+        train(options)  # train for all different p parameter
+
+
+def main():
+    options = cmd_parser()
+    # train(options) # normal cmd_line
+
+    test_p(options)  # Testing p parameter
 
 
 if __name__ == "__main__":
